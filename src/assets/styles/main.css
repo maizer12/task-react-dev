@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#root {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  @apply bg-light-800 flex flex-col min-h-screen;
+}
+
+main {
+  @apply flex-1 min-h-full flex;
+}
+
+.container {
+  @apply max-w-[1200px] px-3 mx-auto;
+}
