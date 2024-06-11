@@ -1,24 +1,17 @@
 import { Link } from '@tanstack/react-router';
-import { navLinks } from './_constants';
+import { Navbar } from './Navbar';
+import { useAuth } from '../../features/auth/hooks/useAuth';
 
 const Header = () => {
+  const { isAuthenticated, user } = useAuth();
+
   return (
     <header className=" bg-dark-400">
       <div className="container py-4 flex justify-between items-center">
         <Link to="/" className="text-2xl text-light-800">
           Logo
         </Link>
-        <nav>
-          {navLinks.map((e) => (
-            <Link
-              to={e.to}
-              className="text-light-800 opacity-[0.5] ml-4 duration-500 hover:!opacity-[1] [&.active]:!opacity-[1]"
-              key={e.label}
-            >
-              {e.label}
-            </Link>
-          ))}
-        </nav>
+        {isAuthenticated ? <p>{user?.email}</p> : <Navbar />}
       </div>
     </header>
   );

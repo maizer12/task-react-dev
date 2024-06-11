@@ -17,8 +17,9 @@ const App = () => {
   }, [authService]);
 
   useEffect(() => {
+    console.log('tt');
     if (localStorage.getItem('token')) getMe();
-  }, []);
+  }, [authService]);
 
   return <RouterProvider router={router} />;
 };

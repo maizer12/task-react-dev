@@ -1,8 +1,9 @@
 import React from 'react';
 import { Formik, Form as FormikForm } from 'formik';
-import * as Yup from 'yup';
+import { loginValidationSchema, registrationValidationSchema } from '../../../core/validation/validationSchema';
 import TextInput from './TextInput';
 import LoadingSpinner from '../../../shared/components/LoadingSpinner';
+import { Link } from '@tanstack/react-router';
 
 interface FormProps {
   title: string;
@@ -20,14 +21,7 @@ const Form: React.FC<FormProps> = ({ title, buttonText, onSubmit, loading, isReg
     lastName: '',
   };
 
-  const validationSchema = Yup.object({
-    username: Yup.string().email('Invalid email address').required('Required'),
-    password: Yup.string().min(6, 'Password must be at least 6 characters').required('Required'),
-    ...(isRegistration && {
-      firstName: Yup.string().required('Required'),
-      lastName: Yup.string().required('Required'),
-    }),
-  });
+  const validationSchema = isRegistration ? registrationValidationSchema : loginValidationSchema;
 
   return (
     <Formik
@@ -43,10 +37,10 @@ const Form: React.FC<FormProps> = ({ title, buttonText, onSubmit, loading, isReg
         <FormikForm className="max-w-md mx-auto mt-8 p-4 py-8 bg-white rounded-lg shadow-md min-w-[360px]">
           <h1 className="text-dark-200 font-bold text-center text-2xl mb-4">{title}</h1>
           {isRegistration && (
-            <>
+            <div className="flex gap-4">
               <TextInput label="First Name:" name="firstName" type="text" />
               <TextInput label="Last Name:" name="lastName" type="text" />
-            </>
+            </div>
           )}
           <TextInput label="Email:" name="username" type="email" />
           <TextInput label="Password:" name="password" type="password" />
@@ -57,6 +51,23 @@ const Form: React.FC<FormProps> = ({ title, buttonText, onSubmit, loading, isReg
           >
             {isSubmitting || loading ? <LoadingSpinner /> : buttonText}
           </button>
+          <div className="mt-4 text-center">
+            {isRegistration ? (
+              <p>
+                Already have an account?{' '}
+                <Link to="/login" className="text-primary-500">
+                  Login
+                </Link>
+              </p>
+            ) : (
+              <p>
+                Don't have an account?{' '}
+                <Link to="/registration" className="text-primary-500">
+                  Register
+                </Link>
+              </p>
+            )}
+          </div>
         </FormikForm>
       )}
     </Formik>
