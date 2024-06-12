@@ -11,9 +11,10 @@ interface FormProps {
   onSubmit: (formData: { email: string; password: string; firstName?: string; lastName?: string }) => Promise<void>;
   loading: boolean;
   isRegistration?: boolean;
+  errorText: null | string;
 }
 
-const Form: React.FC<FormProps> = ({ title, buttonText, onSubmit, loading, isRegistration = false }) => {
+const Form: React.FC<FormProps> = ({ title, buttonText, onSubmit, loading, isRegistration = false, errorText }) => {
   const initialValues = {
     email: '',
     password: '',
@@ -34,7 +35,7 @@ const Form: React.FC<FormProps> = ({ title, buttonText, onSubmit, loading, isReg
       }}
     >
       {({ isSubmitting }) => (
-        <FormikForm className="max-w-md mx-auto mt-8 p-4 py-8 bg-white rounded-lg shadow-md min-w-[360px]">
+        <FormikForm className="max-w-md mx-auto mt-8 p-4 pt-8 pb-4 bg-white rounded-lg shadow-md min-w-[360px]">
           <h1 className="text-dark-200 font-bold text-center text-2xl mb-4">{title}</h1>
           {isRegistration && (
             <div className="flex gap-4">
@@ -52,22 +53,25 @@ const Form: React.FC<FormProps> = ({ title, buttonText, onSubmit, loading, isReg
             {isSubmitting || loading ? <LoadingSpinner /> : buttonText}
           </button>
           <div className="mt-4 text-center">
-            {isRegistration ? (
-              <p>
-                Already have an account?
-                <Link to="/login" className="text-primary-500">
-                  Login
-                </Link>
-              </p>
-            ) : (
-              <p>
-                Don't have an account?
-                <Link to="/registration" className="text-primary-500">
-                  Register
-                </Link>
-              </p>
-            )}
+            <p className="flex gap-2 justify-center">
+              {isRegistration ? (
+                <>
+                  Already have an account?
+                  <Link to="/login" className="text-primary-500">
+                    Login
+                  </Link>
+                </>
+              ) : (
+                <>
+                  Don't have an account?
+                  <Link to="/registration" className="text-primary-500">
+                    Register
+                  </Link>
+                </>
+              )}
+            </p>
           </div>
+          {errorText && <div className="bg-red-100 anim-opacity mt-4 p-2 rounded-sm">{errorText}</div>}
         </FormikForm>
       )}
     </Formik>

@@ -12,14 +12,22 @@ export const LoginForm = () => {
 
   const handleLogin = async ({ email, password }: LoginFormParams) => {
     try {
-      await authService.login(email, password);
+      await authService.login({ email, password });
       redirectTo('/');
     } catch (error) {
       console.error(error);
     }
   };
 
-  return <Form title="Login" buttonText="Login" onSubmit={handleLogin} loading={authState.loading} />;
+  return (
+    <Form
+      title="Login"
+      buttonText="Login"
+      errorText={authState.error}
+      onSubmit={handleLogin}
+      loading={authState.loading}
+    />
+  );
 };
 
 export default LoginForm;

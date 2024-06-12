@@ -14,7 +14,7 @@ export const RegistrationForm = () => {
     try {
       const fullName = `${firstName} ${lastName}`;
 
-      await authService.registration(email, password, fullName);
+      await authService.registration({ email, password, fullName });
       redirectTo('/');
     } catch (error) {
       console.error(error);
@@ -25,6 +25,7 @@ export const RegistrationForm = () => {
     <Form
       title="Register"
       buttonText="Register"
+      errorText={authState.error}
       onSubmit={handleRegister}
       loading={authState.loading}
       isRegistration={true}

@@ -1,41 +1,64 @@
 import { BehaviorSubject } from 'rxjs';
-import { ReqUser, UserType } from '../../interfaces/shared.types.d';
+import { LoginParams, RegistrationParams, ReqUser, UserType } from '../../interfaces/shared.types.d';
 import axios from '../../api/axios';
+import { AxiosError } from 'axios';
 
 export interface AuthState {
-  isAuthenticated: boolean;
+  error: null | string;
   user: null | UserType;
   loading: boolean;
 }
 
 export class AuthService {
-  private authState$ = new BehaviorSubject<AuthState>({ isAuthenticated: false, user: null, loading: false });
+  private authState$ = new BehaviorSubject<AuthState>({ error: null, user: null, loading: false });
 
-  async login(email: string, password: string) {
+  async login(value: LoginParams) {
     try {
-      this.authState$.next({ ...this.authState$.getValue(), loading: true });
+      const { email, password } = value;
+      this.authState$.next({ ...this.authState$.getValue(), error: null, loading: true });
       const { data } = await axios.post<ReqUser>('/auth/login', { email, password });
-      this.authState$.next({ isAuthenticated: true, user: data.data, loading: false });
+      this.authState$.next({ error: null, user: data.data, loading: false });
       localStorage.setItem('token', data.token);
     } catch (err) {
-      console.log(err);
+      if (err) {
+        const axiosError = err as AxiosError<{ message: string }>;
+        this.authState$.next({
+          ...this.authState$.getValue(),
+          error: axiosError.response?.data.message || 'Failed to login',
+          loading: false,
+        });
+      }
+      throw err;
     }
   }
 
-  async registration(email: string, fullName: string, password: string) {
+  async registration(value: RegistrationParams) {
     try {
-      this.authState$.next({ ...this.authState$.getValue(), loading: true });
+      const { email, fullName, password } = value;
+      this.authState$.next({
+        ...this.authState$.getValue(),
+        error: null,
+        loading: true,
+      });
       const { data } = await axios.post<ReqUser>('/auth/register', { email, fullName, password });
-      this.authState$.next({ isAuthenticated: true, user: data.data, loading: false });
+      this.authState$.next({ error: null, user: data.data, loading: false });
       localStorage.setItem('token', data.token);
     } catch (err) {
-      console.log(err);
+      if (err) {
+        const axiosError = err as AxiosError<{ message: string }>;
+        this.authState$.next({
+          ...this.authState$.getValue(),
+          error: axiosError.response?.data.message || 'Failed to registration',
+          loading: false,
+        });
+      }
+      throw err;
     }
   }
 
   logout() {
     if (localStorage.getItem('token')) localStorage.removeItem('token');
-    this.authState$.next({ isAuthenticated: false, user: null, loading: false });
+    this.authState$.next({ error: null, user: null, loading: false });
   }
 
   get authState() {
@@ -50,7 +73,7 @@ export class AuthService {
     try {
       this.authState$.next({ ...this.authState$.getValue(), loading: true });
       const { data } = await axios('/auth/me');
-      this.authState$.next({ isAuthenticated: true, user: data.data, loading: false });
+      this.authState$.next({ error: null, user: data.data, loading: false });
     } catch (err) {
       return err;
     }
