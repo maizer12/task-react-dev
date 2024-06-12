@@ -22,6 +22,17 @@ export class AuthService {
     }
   }
 
+  async registration(email: string, fullName: string, password: string) {
+    try {
+      this.authState$.next({ ...this.authState$.getValue(), loading: true });
+      const { data } = await axios.post<ReqUser>('/auth/register', { email, fullName, password });
+      this.authState$.next({ isAuthenticated: true, user: data.data, loading: false });
+      localStorage.setItem('token', data.token);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   logout() {
     if (localStorage.getItem('token')) localStorage.removeItem('token');
     this.authState$.next({ isAuthenticated: false, user: null, loading: false });

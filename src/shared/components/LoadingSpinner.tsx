@@ -10,7 +10,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 28 }) => {
 
   return (
     <div
-      className="animate-spin rounded-full border-4 border-t-transparent border-b-transparent mx-auto"
+      className="animate-spin rounded-full anim-opacity border-4 border-t-transparent border-b-transparent mx-auto"
       style={{ height: spinnerSize, width: spinnerSize }}
     ></div>
   );

@@ -2,14 +2,17 @@ import { useAuth } from '../hooks/useAuth';
 import { container } from '../../../core/di/container';
 import { AuthService } from '../../../core/services/authService';
 import Form from './Form';
+import useRedirect from '../hooks/useRedirect';
 
 export const LoginForm = () => {
   const authService = container.resolve(AuthService);
   const authState = useAuth();
+  const redirectTo = useRedirect();
 
-  const handleLogin = async ({ username, password }: { username: string; password: string }) => {
+  const handleLogin = async ({ email, password }: { email: string; password: string }) => {
     try {
-      await authService.login(username, password);
+      await authService.login(email, password);
+      redirectTo('/');
     } catch (error) {
       console.error(error);
     }

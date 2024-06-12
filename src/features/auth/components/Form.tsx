@@ -8,14 +8,14 @@ import { Link } from '@tanstack/react-router';
 interface FormProps {
   title: string;
   buttonText: string;
-  onSubmit: (formData: { username: string; password: string; firstName?: string; lastName?: string }) => Promise<void>;
+  onSubmit: (formData: { email: string; password: string; firstName?: string; lastName?: string }) => Promise<void>;
   loading: boolean;
   isRegistration?: boolean;
 }
 
 const Form: React.FC<FormProps> = ({ title, buttonText, onSubmit, loading, isRegistration = false }) => {
   const initialValues = {
-    username: '',
+    email: '',
     password: '',
     firstName: '',
     lastName: '',
@@ -42,7 +42,7 @@ const Form: React.FC<FormProps> = ({ title, buttonText, onSubmit, loading, isReg
               <TextInput label="Last Name:" name="lastName" type="text" />
             </div>
           )}
-          <TextInput label="Email:" name="username" type="email" />
+          <TextInput label="Email:" name="email" type="email" />
           <TextInput label="Password:" name="password" type="password" />
           <button
             type="submit"
