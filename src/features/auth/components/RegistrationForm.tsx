@@ -1,28 +1,17 @@
-import React from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { container } from '../../../core/di/container';
 import { AuthService } from '../../../core/services/authService';
 import Form from './Form';
 import useRedirect from '../hooks/useRedirect';
+import { RegistrationFormParams } from '../auth.types';
 
 export const RegistrationForm = () => {
   const authService = container.resolve(AuthService);
   const authState = useAuth();
   const redirectTo = useRedirect();
 
-  const handleRegister = async ({
-    email,
-    password,
-    firstName,
-    lastName,
-  }: {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-  }) => {
+  const handleRegister = async ({ email, password, firstName, lastName }: RegistrationFormParams) => {
     try {
-      console.log(email);
       const fullName = `${firstName} ${lastName}`;
 
       await authService.registration(email, password, fullName);

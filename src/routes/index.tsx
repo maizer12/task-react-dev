@@ -5,5 +5,5 @@ export const Route = createFileRoute('/')({
 });
 
 function Home() {
-  return <div className="container py-12">here789</div>;
+  return <div className="container py-12">Hello world!</div>;
 }

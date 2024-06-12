@@ -27,7 +27,7 @@ const Header = () => {
         <Link to="/" className="text-2xl text-light-800">
           Logo
         </Link>
-        {user ? renderUserProfile() : <Navbar />}
+        {user || loading ? renderUserProfile() : <Navbar />}
       </div>
     </header>
   );

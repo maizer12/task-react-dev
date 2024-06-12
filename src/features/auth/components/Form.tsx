@@ -46,7 +46,7 @@ const Form: React.FC<FormProps> = ({ title, buttonText, onSubmit, loading, isReg
           <TextInput label="Password:" name="password" type="password" />
           <button
             type="submit"
-            className="w-full bg-primary-500 text-white font-bold py-2 min-h-[39px] px-4 rounded-lg hover:bg-primary-600 focus:outline-none duration-700 focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50"
+            className="w-full bg-primary-500 text-white font-bold py-2 min-h-[39px] px-4 rounded-lg hover:bg-primary-600 focus:outline-none duration-700 focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50 flex justify-center"
             disabled={isSubmitting || loading}
           >
             {isSubmitting || loading ? <LoadingSpinner /> : buttonText}
@@ -54,14 +54,14 @@ const Form: React.FC<FormProps> = ({ title, buttonText, onSubmit, loading, isReg
           <div className="mt-4 text-center">
             {isRegistration ? (
               <p>
-                Already have an account?{' '}
+                Already have an account?
                 <Link to="/login" className="text-primary-500">
                   Login
                 </Link>
               </p>
             ) : (
               <p>
-                Don't have an account?{' '}
+                Don't have an account?
                 <Link to="/registration" className="text-primary-500">
                   Register
                 </Link>
